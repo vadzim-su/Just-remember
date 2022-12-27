@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -27,6 +29,7 @@ export class CategoriesController {
   }
 
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   createCategory(@Body() category: CreateCategotyDto): Promise<Category> {
     return this.categoriesService.createCategory(category);
   }
@@ -44,5 +47,3 @@ export class CategoriesController {
     return this.categoriesService.updateCategory(id, category);
   }
 }
-// hot - 8.42
-// cold - 21.31
