@@ -7,7 +7,7 @@ import {
   Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { User } from './users/users.service';
+import { ExistedUser } from './users/users.service';
 
 @Controller('auth')
 export class AuthController {
@@ -22,7 +22,7 @@ export class AuthController {
 
   @Post('/register')
   @HttpCode(HttpStatus.CREATED)
-  register(@Request() req): Promise<User> {
+  register(@Request() req): Promise<ExistedUser> {
     return this.authService.registerUser(req.body);
   }
 }

@@ -3,43 +3,38 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from './users/users.service';
 import { CreateUserDto } from './dto/create-user.dto';
-import { InjectModel } from '@nestjs/mongoose';
-import { User, UserDocument } from './chemas/user.schema';
-import { Model } from 'mongoose';
-import { UserSchema } from './chemas/user.schema';
+import { User } from './chemas/user.schema';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
     private jwtService: JwtService,
-   // private usersService: UsersService,
-  )
-  {}
+    private usersService: UsersService,
+  ) {}
 
   async registerUser(user: CreateUserDto): Promise<User> {
-    const existingUser = await this.userModel.findOne({ login: user.login });
+    const existingUser = await this.usersService.findOne(user.login);
     if (existingUser) {
       console.log('user already exist');
       // TODO
     } else {
       const salt = await bcrypt.genSalt();
       const hash = await bcrypt.hash(user.password, salt);
-      const createdUser = new this.userModel({ ...user, password: hash });
+      const createdUser = this.usersService.createUser(user, hash);
       return createdUser.save();
     }
   }
 
   async loginUser(user: any) {
-    const existingUser = await this.userModel.findOne({ login: user.login });
+    const existingUser = await this.usersService.findOne(user.login);
     if (existingUser) {
       const isMatch = await bcrypt.compare(
         user.password,
         existingUser.password,
       );
       if (isMatch) {
-        const payload = { username: user.username, sub: user.userId };
+        const payload = { username: user.login, sub: existingUser._id };
         return {
           access_token: `Bearer ${this.jwtService.sign(payload)}`,
         };
