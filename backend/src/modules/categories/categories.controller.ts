@@ -14,7 +14,7 @@ import { Category } from './chemas/category.schema';
 import { CreateCategotyDto } from './dto/create-category.dto';
 import { UpdateCategotyDto } from './dto/update-category.dto';
 
-@Controller('categories')
+@Controller('/api/categories')
 export class CategoriesController {
   constructor(private categoriesService: CategoriesService) {}
 
