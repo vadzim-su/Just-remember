@@ -1,0 +1,29 @@
+:host {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  .loader-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.4);
+
+    svg {
+      width: 50px;
+      height: auto;
+      margin: 0 auto;
+
+      animation: rotating 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+    }
+  }
+
+  @keyframes rotating {
+    from {
+      -webkit-transform: rotate(0deg);
+    }
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+}

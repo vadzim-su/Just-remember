@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CategoriesComponent } from './pages/admin-page/categories/categories.component';
+import { SharedModule } from './shared/shared.module';
+import { AuthModule } from './pages/auth-page/auth.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -9,9 +11,9 @@ const routes: Routes = [
       import('./pages/admin-page/admin.module').then((m) => m.AdminModule),
   },
   {
-    path: 'auth',
+    path: '',
     loadChildren: () =>
-      import('./pages/admin-page/admin.module').then((m) => m.AdminModule),
+      import('./pages/auth-page/auth.module').then((m) => m.AuthModule),
   },
 
   // {
@@ -21,8 +23,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [CategoriesComponent],
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  declarations: [],
+  exports: [RouterModule, SharedModule, AuthModule, ReactiveFormsModule],
+  imports: [RouterModule.forRoot(routes), SharedModule, ReactiveFormsModule],
 })
 export class AppRoutingModule {}
